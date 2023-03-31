@@ -4,5 +4,4 @@ A new Flutter project.
 
 ## Getting Started
 
-A flutter application with CI/CD enabled. It will build for android and upload the build file as artifact.
-teste
+A flutter application with CI/CD enabled. It will build for android and upload the build file as artifact. Also it will create release with artifacts.
