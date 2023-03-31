@@ -69,7 +69,6 @@ jobs:
       - name: 🛎️ Create release
         uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           tag: v2.2
           artifacts: "./build/app/outputs/apk/release/app-release.apk"
           draft: true
