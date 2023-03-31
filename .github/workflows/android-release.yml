@@ -2,12 +2,16 @@ name: Android Release
 
 # 1
 on:
-  # 2
   push:
-    branches: ['develop']
-    tags:
-    - 'v*'
-  # 3
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      - develop
+    # Sequence of patterns matched against refs/tags
+    tags:        
+      - v*
+      - v1.*
+      - "v*.*.*"
+
   workflow_dispatch:
 
 # 4
