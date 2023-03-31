@@ -30,7 +30,13 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.7
 
       - name: Create version.txt with shortSha
-        run: echo ${{ steps.gitversion.outputs.shortSha  }} > version.txt
+        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
+
+      - name: Upload version.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitversion
+          path: version.txt
 
       - name: Echo git version
         run: cat version.txt
@@ -57,30 +63,28 @@ jobs:
       - name: List build dir
         run: ls ./build/app/outputs/apk/release/
 
-      # - uses: actions/checkout@v3
-      # - name: Get version.txt
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: gitversion
+      - name: Get version.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: gitversion
 
-      # - name: Create new file without newline char from version.txt
-      #   run: tr -d '\n' < version.txt > version1.txt
+      - name: Create new file without newline char from version.txt
+        run: tr -d '\n' < version.txt > version1.txt
 
-      # - name: Read version
-      #   id: version
-      #   uses: juliangruber/read-file-action@v1
-      #   with:
-      #     path: version1.txt
+      - name: Read version
+        id: version
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: version1.txt
 
-      # - name: Update version in YAML
-      #   run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+      - name: Update version in YAML
+        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
 
       - name: 🛎️ Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: v2.2
+          tag: ${{ steps.version.outputs.content }}+${{ github.run_number }}
           artifacts: './build/app/outputs/apk/release/app-release.apk'
-          draft: true
 
       # - name: Release
       #   uses: softprops/action-gh-release@v1
